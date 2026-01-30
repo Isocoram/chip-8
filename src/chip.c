@@ -20,6 +20,24 @@ void init_chip(chip8_t * chip) {
     memcpy(&chip->memory[FONT_START], font, sizeof(font));
 }
 
+void load_rom(chip8_t * chip, const char * path) {
+    FILE * file = fopen(path, "rb");
+    if (!file) {
+        fprintf(stderr, "Failed to open ROM: %s\n", path);
+        exit(1);
+    }
+    fseek(file, 0, SEEK_END);
+    long rom_size = ftell(file);
+    rewind(file);
+    if (rom_size > (4096 - 0x200)) {
+        fprintf(stderr, "ROM too big: %ld bytes\n", rom_size);
+        fclose(file);
+        exit(1);
+    }
+    fread(&chip->memory[0x200], sizeof(uint8_t), rom_size, file);
+    fclose(file);
+}
+
 void chip8_cycle(chip8_t * chip) {
     if (chip->pc > 4096) {
         return;

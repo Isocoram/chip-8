@@ -21,6 +21,8 @@ typedef struct  {
 } chip8_t;
 
 void init_chip(chip8_t * chip);
+void load_rom(chip8_t * chip, const char *path);
 void chip8_cycle(chip8_t * chip);
+
 
 #endif
