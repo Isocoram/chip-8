@@ -3,6 +3,7 @@
 .Rapp.history
 .DS_Store
 bin/
+chip-8/
 build/
 obj/
 *.o
