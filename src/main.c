@@ -3,12 +3,13 @@
 #include <unistd.h>
 #include <SDL2/SDL.h>
 #include "chip.h"
+#include "gfx_sdl.h"
 
 #define CPU_SPEED 500
 
 int main(int argc, char** argv) {
-    (int *)argc;
-    (char *)argv;
+    int a = argc;
+    char* b = *argv;
     chip8_t chip;
     init_chip(&chip);
     sdl_init();

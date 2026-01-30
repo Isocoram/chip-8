@@ -1,4 +1,7 @@
-#pragma once
+#ifndef CHIP_H
+#define CHIP_H
+
+#include <stdint.h>
 
 typedef struct  {
     uint8_t memory[4096];
@@ -14,6 +17,5 @@ typedef struct  {
 } chip8_t;
 
 void init_chip(chip8_t * chip);
-void sdl_init(void);
-void sdl_draw(uint8_t * gfx);
-void sdl_handle_input(chip8_t * chip);
+
+#endif
