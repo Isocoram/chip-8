@@ -4,6 +4,7 @@
 .DS_Store
 bin/
 chip-8/
+chip-8
 build/
 obj/
 *.o
