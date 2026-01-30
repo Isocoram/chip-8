@@ -21,12 +21,11 @@ void init_chip(chip8_t * chip) {
 }
 
 void chip8_cycle(chip8_t * chip) {
-    uint16_t opcode = (chip->memory[chip->pc] << 8) | chip->memory[chip->pc+1];
-    chip->pc += 2;
-    
     if (chip->pc > 4096) {
         return;
     }
+    uint16_t opcode = (chip->memory[chip->pc] << 8) | chip->memory[chip->pc+1];
+    chip->pc += 2;
     
     uint8_t X = (opcode & 0x0F00) >> 8;
     uint8_t Y = (opcode & 0x00F0) >> 4;
@@ -40,8 +39,11 @@ void chip8_cycle(chip8_t * chip) {
                 memset(chip->gfx, 0, sizeof(chip->gfx));
             }
             else if (opcode == 0x00EE) {
-                chip->sp--;
-                chip->pc = chip->stack[chip->sp];
+                if (chip->sp == 0) {
+                    fprintf(stderr, "Stack Overflow!\n");
+                    return;
+                }
+                chip->pc = chip->stack[--chip->sp];
             }
             else {
                 // exec machine code instruction at NNN
@@ -53,8 +55,9 @@ void chip8_cycle(chip8_t * chip) {
             // implement case
             break;
         case 0x2000:
-            chip->stack[chip->sp] = chip->pc;
-            chip->sp++;
+            if (chip->sp >= STACK_SIZE) { fprintf(stderr,"Stack overflow!\n");
+                return; }
+            chip->stack[chip->sp++] = chip->pc;
             chip->pc = NNN;
             break;
         case 0x3000:
@@ -128,14 +131,14 @@ void chip8_cycle(chip8_t * chip) {
             // handle BXNN support later
             chip->I = chip->V[0] + NNN;
             break;
-        case 0xC000:
-            srand((int)time(NULL));
+        case 0xC000: {
             uint8_t random = (uint8_t)(rand() ^ (rand() >> 8)) & 0xFF;
-            chip->V[X] = random & NN;
+            chip->V[X] = (random & 0xFF) & NN;
             break;
+        }
         case 0xD000: {
-            uint8_t VX = chip->V[X] % 64;
-            uint8_t VY = chip->V[Y] % 32;
+            uint8_t VX = chip->V[X] & 63; // = 0b00111111
+            uint8_t VY = chip->V[Y] & 31; // = 0b00011111
             uint8_t height = N;
             chip->V[0xF] = 0;
             for (int i = 0; i < height; i++) {

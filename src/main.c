@@ -2,12 +2,14 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <SDL2/SDL.h>
+#include <time.h>
 #include "chip.h"
 #include "gfx_sdl.h"
 
 int main(int argc, char** argv) {
     (void)argc;
     (void)argv;
+    srand(time(NULL));
     chip8_t chip;
     init_chip(&chip);
     chip.gfx[0] = 1;
