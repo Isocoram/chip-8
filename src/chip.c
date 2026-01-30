@@ -5,8 +5,6 @@
 #include "chip.h"
 #include "font.h"
 
-#define FONT_START 0x50
-
 void init_chip(chip8_t * chip) {
     memset(chip->memory, 0, sizeof(chip->memory));
     memset(chip->V, 0, sizeof(chip->V));
@@ -20,5 +18,5 @@ void init_chip(chip8_t * chip) {
     memset(chip->keys, 0, 16);
     
     // Chip-8 font must be loaded at 0x50, 16 chars x 5 bytes = 80 bytes
-    memcpy(&chip->memory[0x50], font, sizeof(font));
+    memcpy(&chip->memory[FONT_START], font, sizeof(font));
 }

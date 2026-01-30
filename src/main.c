@@ -5,13 +5,15 @@
 #include "chip.h"
 #include "gfx_sdl.h"
 
-#define CPU_SPEED 500
-
 int main(int argc, char** argv) {
-    int a = argc;
-    char* b = *argv;
+    (void)argc;
+    (void)argv;
     chip8_t chip;
     init_chip(&chip);
+    chip.gfx[0] = 1;
+    chip.gfx[1] = 1;
+    chip.gfx[64] = 1;
+    chip.gfx[65] = 1;
     sdl_init();
     
     uint32_t last_timer = SDL_GetTicks();

@@ -3,6 +3,9 @@
 
 #include <stdint.h>
 
+#define CPU_SPEED 500
+#define FONT_START 0x50
+
 typedef struct  {
     uint8_t memory[4096];
     uint8_t V[16];

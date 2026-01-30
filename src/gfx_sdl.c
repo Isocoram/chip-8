@@ -1,20 +1,17 @@
 #include <SDL2/SDL.h>
 #include "chip.h"
+#include "gfx_sdl.h"
 
 SDL_Window * window;
 SDL_Renderer * renderer;
 SDL_Texture * texture;
 
-#define SCALE 10
-#define WIDTH 64
-#define HEIGHT 32
-
 void sdl_init(void) {
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER);
     window = SDL_CreateWindow(
         "CHIP-8",
-        SDL_WINDOWPOS_CENTERED,
-        SDL_WINDOWPOS_CENTERED,
+        SDL_WINDOWPOS_UNDEFINED,
+        SDL_WINDOWPOS_UNDEFINED,
         WIDTH * SCALE,
         HEIGHT * SCALE,
         SDL_WINDOW_SHOWN
@@ -26,7 +23,7 @@ void sdl_init(void) {
         SDL_TEXTUREACCESS_STREAMING,
         WIDTH,
         HEIGHT
-    );
+        );
 }
 
 void sdl_draw(uint8_t * gfx) {
