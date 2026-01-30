@@ -26,8 +26,7 @@ int main(int argc, char** argv) {
     while (1) {
         sdl_handle_input(&chip);
         for (int i = 0; i < CPU_SPEED / 60; i++) {
-            // handle cpu cycle
-            // chip8_cycle(&chip);
+            chip8_cycle(&chip);
             continue;
         }
         if (SDL_GetTicks() - last_timer >= 16) {
