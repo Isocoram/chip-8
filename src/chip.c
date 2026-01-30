@@ -4,7 +4,7 @@
 #include <string.h>
 #include "chip.h"
 
-void init_chip(Chip8 * chip) {
+void init_chip(chip8_t * chip) {
     memset(chip->memory, 0, sizeof(chip->memory));
     memset(chip->V, 0, sizeof(chip->V));
     chip-> I = 0x200;

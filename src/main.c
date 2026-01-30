@@ -7,7 +7,9 @@
 #define CPU_SPEED 500
 
 int main(int argc, char** argv) {
-    Chip8 chip;
+    (int *)argc;
+    (char *)argv;
+    chip8_t chip;
     init_chip(&chip);
     sdl_init();
     

@@ -11,9 +11,9 @@ typedef struct  {
     uint16_t stack[16];
     uint8_t sp;
     uint8_t keys[16];
-} Chip8; 
+} chip8_t;
 
-void init_chip(Chip8 * chip);
+void init_chip(chip8_t * chip);
 void sdl_init(void);
 void sdl_draw(uint8_t * gfx);
-void sdl_handle_input(Chip8 * chip);
+void sdl_handle_input(chip8_t * chip);

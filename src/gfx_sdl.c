@@ -40,11 +40,11 @@ void sdl_draw(uint8_t * gfx) {
     SDL_RenderPresent(renderer);
 }
 
-void sdl_handle_input(Chip8 * chip) {
+void sdl_handle_input(chip8_t * chip) {
     SDL_Event event;
     while(SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT) { exit(0); }
-        if (event.type == SDL_KEYDOWN || event.type == SDL_KEYUP) {
+        if (event.type == SDL_KEYDOWN ||event.type == SDL_KEYUP) {
             int pressed = (event.type == SDL_KEYDOWN);
             switch (event.key.keysym.sym) {
                 case SDLK_1: chip->keys[0x1] = pressed; break;
@@ -71,7 +71,7 @@ void sdl_handle_input(Chip8 * chip) {
     }
 }
 
-const uint8_t font[80] = {
+const uint8_t font[320] = {
     0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
     0x20, 0x60, 0x20, 0x20, 0x70, // 1
     0xF0, 0x10, 0xF0, 0x80, 0xF0, // 2
