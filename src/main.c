@@ -11,9 +11,15 @@ int main(int argc, char** argv) {
     chip8_t chip;
     init_chip(&chip);
     chip.gfx[0] = 1;
-    chip.gfx[1] = 1;
-    chip.gfx[64] = 1;
+    chip.gfx[1] = 0;
+    chip.gfx[2] = 1;
+    chip.gfx[64] = 0;
     chip.gfx[65] = 1;
+    chip.gfx[66] = 0;
+    chip.gfx[128] = 1;
+    chip.gfx[129] = 0;
+    chip.gfx[130] = 1;
+   
     sdl_init();
     
     uint32_t last_timer = SDL_GetTicks();

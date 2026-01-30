@@ -5,6 +5,7 @@
 
 #define CPU_SPEED 500
 #define FONT_START 0x50
+#define STACK_SIZE 16
 
 typedef struct  {
     uint8_t memory[4096];
@@ -14,11 +15,12 @@ typedef struct  {
     uint8_t gfx[64*32];
     uint8_t delay_timer;
     uint8_t sound_timer;
-    uint16_t stack[16];
+    uint16_t stack[STACK_SIZE];
     uint8_t sp;
     uint8_t keys[16];
 } chip8_t;
 
 void init_chip(chip8_t * chip);
+void chip8_cycle(chip8_t * chip);
 
 #endif
