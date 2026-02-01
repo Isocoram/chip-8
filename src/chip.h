@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-#define CPU_SPEED 500
+#define CPU_SPEED 700
 #define FONT_START 0x50
 #define STACK_SIZE 16
 

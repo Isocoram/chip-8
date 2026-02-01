@@ -4,3 +4,7 @@ LDFLAGS = $(shell pkg-config --libs sdl2)
 
 chip8:
 	$(CC) src/*.c roms/*.c -o bin/chip8 $(CFLAGS) $(LDFLAGS)
+
+start:
+	./bin/chip8
+	

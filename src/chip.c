@@ -30,7 +30,7 @@ void load_rom(chip8_t * chip, const char * path) {
     long rom_size = ftell(file);
     rewind(file);
     if (rom_size > (4096 - 0x200)) {
-        fprintf(stderr, "ROM too big: %ld bytes\n", rom_size);
+        fprintf(stderr, "ROM too large: %ld bytes\n", rom_size);
         fclose(file);
         exit(1);
     }
@@ -44,13 +44,11 @@ void chip8_cycle(chip8_t * chip) {
     }
     uint16_t opcode = (chip->memory[chip->pc] << 8) | chip->memory[chip->pc+1];
     chip->pc += 2;
-    
     uint8_t X = (opcode & 0x0F00) >> 8;
     uint8_t Y = (opcode & 0x00F0) >> 4;
     uint8_t N = (opcode & 0x000F);
     uint8_t NN = (opcode & 0x00FF);
     uint16_t NNN = (opcode & 0x0FFF);
-    
     switch (opcode & 0xF000) {
         case 0x0000:
             if (opcode == 0x00E0) {
@@ -70,7 +68,6 @@ void chip8_cycle(chip8_t * chip) {
             break;
         case 0x1000:
             chip->pc = NNN;
-            // implement case
             break;
         case 0x2000:
             if (chip->sp >= STACK_SIZE) { fprintf(stderr,"Stack overflow!\n");
@@ -159,9 +156,9 @@ void chip8_cycle(chip8_t * chip) {
             uint8_t VY = chip->V[Y] & 31; // = 0b00011111
             uint8_t height = N;
             chip->V[0xF] = 0;
-            for (int i = 0; i < height; i++) {
+            for (unsigned i = 0; i < height; i++) {
                 uint8_t sprite = chip->memory[chip->I + i];
-                for (int j = 0; j < 8; j++) {
+                for (unsigned j = 0; j < 8; j++) {
                     if (sprite & (0x80 >> j)) {
                         int x = (VX + j) % 64;
                         int y = (VY + i) % 32;
@@ -176,7 +173,20 @@ void chip8_cycle(chip8_t * chip) {
             break;
         }
         case 0xE000:
-            // implement case
+            switch (NN) {
+                case 0x009E:
+                    uint8_t key = chip->V[X] & 0x0F;
+                    if (chip->keys[key]) {
+                        chip->pc += 2;
+                    }
+                    break;
+                case 0x00A1:
+                    uint8_t key = chip->V[X] & 0x0F;
+                    if (!(chip->keys[key])) {
+                        chip->pc += 2;
+                    }
+                    break;
+            }
             break;
         case 0xF000:
             // implement case

@@ -28,7 +28,7 @@ void sdl_init(void) {
 
 void sdl_draw(uint8_t * gfx) {
     uint32_t pixels[WIDTH * HEIGHT];
-    for (int i = 0; i < WIDTH * HEIGHT; i++)  {
+    for (unsigned i = 0; i < WIDTH * HEIGHT; i++)  {
         pixels[i] = gfx[i] ? 0xFFFFFFFF : 0x00000000;
     }
     SDL_UpdateTexture(texture, NULL, pixels, WIDTH * sizeof(uint32_t));
@@ -60,8 +60,8 @@ void sdl_handle_input(chip8_t * chip) {
                 case SDLK_f: chip->keys[0xE] = pressed; break;
 
                 case SDLK_y: chip->keys[0xA] = pressed; break;
-                case SDLK_x: chip->keys[0xB] = pressed; break;
-                case SDLK_c: chip->keys[0xC] = pressed; break;
+                case SDLK_x: chip->keys[0x0] = pressed; break;
+                case SDLK_c: chip->keys[0xB] = pressed; break;
                 case SDLK_v: chip->keys[0xF] = pressed; break;
             }
         }
