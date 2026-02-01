@@ -6,10 +6,16 @@
 #include "chip.h"
 #include "font.h"
 
+void load_font(uint8_t * memory) {
+    for (unsigned i = 0; i < CHIP8_FONT_SIZE; i++) {
+        memory[i] = font[i];
+    }
+}
+
 void init_chip(chip8_t * chip) {
     memset(chip->memory, 0, sizeof(chip->memory));
     memset(chip->V, 0, sizeof(chip->V));
-    chip-> I = 0;
+    chip->I = 0;
     chip->pc = 0x200;
     memset(chip->gfx, 0, 64 * 32);
     chip->delay_timer = 0;
@@ -17,7 +23,10 @@ void init_chip(chip8_t * chip) {
     memset(chip->stack, 0, sizeof(chip->stack));
     chip->sp = 0;
     memset(chip->keys, 0, 16);
-    memcpy(&chip->memory[FONT_START], font, sizeof(font));
+    // memcpy(&chip->memory[FONT_START], font, sizeof(font));
+    load_font(&chip->memory[FONT_START]);
+    chip->waiting_for_key = 0;
+    chip->wait_reg = 0;
 }
 
 void load_rom(chip8_t * chip, const char * path) {
@@ -39,7 +48,7 @@ void load_rom(chip8_t * chip, const char * path) {
 }
 
 void chip8_cycle(chip8_t * chip) {
-    if (chip->pc > 4096) {
+    if (chip->pc > 4096 || chip->waiting_for_key) {
         return;
     }
     uint16_t opcode = (chip->memory[chip->pc] << 8) | chip->memory[chip->pc+1];
@@ -174,23 +183,49 @@ void chip8_cycle(chip8_t * chip) {
         }
         case 0xE000:
             switch (NN) {
-                case 0x009E:
+                case 0x009E: {
                     uint8_t key = chip->V[X] & 0x0F;
                     if (chip->keys[key]) {
                         chip->pc += 2;
                     }
                     break;
-                case 0x00A1:
+                }
+                case 0x00A1: {
                     uint8_t key = chip->V[X] & 0x0F;
                     if (!(chip->keys[key])) {
                         chip->pc += 2;
                     }
                     break;
+                }
             }
             break;
         case 0xF000:
-            // implement case
-            break;
+            switch (NN) {
+                case 0x0007:
+                    chip->V[X] = chip->delay_timer;
+                    break;
+                case 0x0015:
+                    chip->delay_timer = chip->V[X];
+                    break;
+                case 0x0018:
+                    chip->sound_timer = chip->V[X];
+                    break;
+                case 0x001E:
+                    chip->I += chip->V[X];
+                    if (chip->I > 0xFFF) {
+                        chip->V[0xF] = 1;
+                    } else {
+                        chip->V[0xF] = 0;
+                    }
+                    break;
+                case 0x000A:
+                    chip->waiting_for_key = 1;
+                    chip->wait_reg = X;
+                    chip->pc -= 2;
+                    break;
+                    
+        }
+        break;
     }
 }
 

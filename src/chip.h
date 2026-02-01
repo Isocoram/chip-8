@@ -4,7 +4,7 @@
 #include <stdint.h>
 
 #define CPU_SPEED 700
-#define FONT_START 0x50
+#define FONT_START 0x000
 #define STACK_SIZE 16
 
 typedef struct  {
@@ -18,6 +18,8 @@ typedef struct  {
     uint16_t stack[STACK_SIZE];
     uint8_t sp;
     uint8_t keys[16];
+    uint8_t waiting_for_key;
+    uint8_t wait_reg;
 } chip8_t;
 
 void init_chip(chip8_t * chip);
