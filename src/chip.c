@@ -182,7 +182,7 @@ void chip8_cycle(chip8_t * chip) {
         case 0xE000:
             switch (NN) {
                 case 0x009E: {
-                    uint8_t key = chip->V[X] & 0x0F;
+                    uint8_t key = chip->V[X] /*& 0x0F*/;
                     if (chip->keys[key]) {
                         chip->pc += 2;
                     }
@@ -225,23 +225,26 @@ void chip8_cycle(chip8_t * chip) {
                     chip->I = CHIP8_FONT_ADDR + 5 * chip->V[X];
                     break;
                 case 0x0033: {
-                    printf("FX33 about to execute: I=0x%03X, V[%X]=%d\n", chip->I, X, chip->V[X]);
                     uint8_t V = chip->V[X];
                     chip->memory[chip->I] = V / 100;
                     chip->memory[chip->I + 1] = (V / 10) % 10;
                     chip->memory[chip->I + 2] = V % 10;
-                    printf("FX33: V[%X]=%d stored at I=0x%03X -> [%d, %d, %d]\n",
-                            X, V, chip->I,
-                            chip->memory[chip->I],
-                            chip->memory[chip->I+1],
-                            chip->memory[chip->I+2]);
                     break;
                 }
-                case 0x0055:
+                case 0x0055: {
+                    uint16_t address = chip->I;
+                    for (unsigned i = 0; i <= X; i++) {
+                        chip->memory[address + i] = chip->V[i];
+                    }
                     break;
-                case 0x0065:
+                }
+                case 0x0065: {
+                    uint16_t address = chip->I;
+                    for (unsigned i = 0; i <= X; i++) {
+                        chip->V[i] = chip->memory[address + i];
+                    }
                     break;
-                    
+                }
         }
         break;
     }
