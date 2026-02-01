@@ -23,7 +23,6 @@ void init_chip(chip8_t * chip) {
     memset(chip->stack, 0, sizeof(chip->stack));
     chip->sp = 0;
     memset(chip->keys, 0, 16);
-    // memcpy(&chip->memory[FONT_START], font, sizeof(font));
     load_font(&chip->memory[FONT_START]);
     chip->waiting_for_key = 0;
     chip->wait_reg = 0;
@@ -152,7 +151,6 @@ void chip8_cycle(chip8_t * chip) {
             chip->I = NNN;
             break;
         case 0xB000:
-            // handle BXNN support later
             chip->I = chip->V[0] + NNN;
             break;
         case 0xC000: {
@@ -222,6 +220,26 @@ void chip8_cycle(chip8_t * chip) {
                     chip->waiting_for_key = 1;
                     chip->wait_reg = X;
                     chip->pc -= 2;
+                    break;
+                case 0x0029:
+                    chip->I = CHIP8_FONT_ADDR + 5 * chip->V[X];
+                    break;
+                case 0x0033: {
+                    printf("FX33 about to execute: I=0x%03X, V[%X]=%d\n", chip->I, X, chip->V[X]);
+                    uint8_t V = chip->V[X];
+                    chip->memory[chip->I] = V / 100;
+                    chip->memory[chip->I + 1] = (V / 10) % 10;
+                    chip->memory[chip->I + 2] = V % 10;
+                    printf("FX33: V[%X]=%d stored at I=0x%03X -> [%d, %d, %d]\n",
+                            X, V, chip->I,
+                            chip->memory[chip->I],
+                            chip->memory[chip->I+1],
+                            chip->memory[chip->I+2]);
+                    break;
+                }
+                case 0x0055:
+                    break;
+                case 0x0065:
                     break;
                     
         }
