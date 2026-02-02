@@ -18,7 +18,7 @@ find_package(SDL2 REQUIRED)
 include_directories(${SDL2_INCLUDE_DIRS})
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
-file(SOURCES "src/*.c")
+file(GLOB SOURCES "src/*.c")
 
 add_executable(chip8 ${SOURCES})
 
