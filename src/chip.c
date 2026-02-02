@@ -64,7 +64,7 @@ void chip8_cycle(chip8_t * chip) {
             }
             else if (opcode == 0x00EE) {
                 if (chip->sp == 0) {
-                    fprintf(stderr, "Stack Overflow!\n");
+                    fprintf(stderr, "Stack underflow!\n");
                     return;
                 }
                 chip->pc = chip->stack[--chip->sp];
