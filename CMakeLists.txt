@@ -18,12 +18,7 @@ find_package(SDL2 REQUIRED)
 include_directories(${SDL2_INCLUDE_DIRS})
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
-file(SOURCES 
-		src/main.c
-		src/chip.c
-		src/sdl_gfx.c
-		src/font.c
-)
+file(SOURCES "src/*.c")
 
 add_executable(chip8 ${SOURCES})
 
