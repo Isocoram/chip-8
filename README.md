@@ -34,7 +34,7 @@ Using a terminal copy this repo then change into the repo folder and enter the f
 
 ```
 git clone https://github.com/Isocoram/chip-8
-cd chip8
+cd chip-8
 mkdir build && cd build
 cmake ..
 make
