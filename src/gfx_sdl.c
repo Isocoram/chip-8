@@ -9,7 +9,7 @@ SDL_Texture * texture;
 void sdl_init(void) {
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER);
     window = SDL_CreateWindow(
-        "CHIP-8",
+        "CHIP-8 EMULATOR",
         SDL_WINDOWPOS_UNDEFINED,
         SDL_WINDOWPOS_UNDEFINED,
         WIDTH * SCALE,
