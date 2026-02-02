@@ -67,4 +67,4 @@ The executable takes the path to a ROM as a command line interface argument i.e.
 
 ## License
 
-This project is locensed under the **GNU General Public License v3.0** (or later).
+This project is licensed under the **GNU General Public License v3.0** (or later).
