@@ -2,6 +2,13 @@
 #include "chip.h"
 #include "gfx_sdl.h"
 
+keymap_t layout[] = {
+    {SDLK_1, 0x1}, {SDLK_2, 2}, {SDLK_3, 3}, {SDLK_4, 0xC},
+    {SDLK_q, 0x4}, {SDLK_w, 0x5}, {SDLK_e, 0x6}, {SDLK_r, 0xD},
+    {SDLK_a, 0x7}, {SDLK_s, 0x8}, {SDLK_d, 0x9}, {SDLK_f, 0xE},
+    {SDLK_y, 0xA}, {SDLK_x, 0x0}, {SDLK_c, 0xB}, {SDLK_v, 0xF},
+};
+
 SDL_Window * window;
 SDL_Renderer * renderer;
 SDL_Texture * texture;
@@ -43,138 +50,18 @@ void sdl_handle_input(chip8_t * chip) {
         if (event.type == SDL_QUIT) { exit(0); }
         if (event.type == SDL_KEYDOWN ||event.type == SDL_KEYUP) {
             int pressed = (event.type == SDL_KEYDOWN);
-            switch (event.key.keysym.sym) {
-                case SDLK_1:
-                    chip->keys[0x1] = pressed;
+            SDL_Keycode pressed_key = event.key.keysym.sym;
+            for (unsigned i = 0; i < 16; i++) {
+                if (pressed_key == layout[i].key) {
+                    keymap_t current_key = layout[i];
+                    chip->keys[current_key.value] = pressed;
                     if (pressed && chip->waiting_for_key) {
-                        chip->V[chip->wait_reg] = 0x1;
+                        chip->V[chip->wait_reg] = current_key.value;
                         chip->waiting_for_key = 0;
                         chip->pc += 2;
                     }
-                    break;
-                case SDLK_2:
-                    chip->keys[0x2] = pressed;
-                    if (pressed && chip->waiting_for_key) {
-                        chip->V[chip->wait_reg] = 0x2;
-                        chip->waiting_for_key = 0;
-                        chip->pc += 2;
-                    }
-                    break;
-                case SDLK_3:
-                    chip->keys[0x3] = pressed;
-                    if (pressed && chip->waiting_for_key) {
-                        chip->V[chip->wait_reg] = 0x3;
-                        chip->waiting_for_key = 0;
-                        chip->pc += 2;
-                    }
-                    break;
-                case SDLK_4:
-                    chip->keys[0xC] = pressed;
-                    if (pressed && chip->waiting_for_key) {
-                        chip->V[chip->wait_reg] = 0xC;
-                        chip->waiting_for_key = 0;
-                        chip->pc += 2;
-                    }
-                    break;
 
-                case SDLK_q:
-                    chip->keys[0x4] = pressed;
-                    if (pressed && chip->waiting_for_key) {
-                        chip->V[chip->wait_reg] = 0x4;
-                        chip->waiting_for_key = 0;
-                        chip->pc += 2;
-                    }
-                    break;
-                case SDLK_w:
-                    chip->keys[0x5] = pressed;
-                    if (pressed && chip->waiting_for_key) {
-                        chip->V[chip->wait_reg] = 0x5;
-                        chip->waiting_for_key = 0;
-                        chip->pc += 2;
-                    }
-                    break;
-                case SDLK_e: 
-                    chip->keys[0x6] = pressed;
-                    if (pressed && chip->waiting_for_key) {
-                        chip->V[chip->wait_reg] = 0x6;
-                        chip->waiting_for_key = 0;
-                        chip->pc += 2;
-                    }
-                    break;
-                case SDLK_r:
-                    chip->keys[0xD] = pressed;
-                    if (pressed && chip->waiting_for_key) {
-                        chip->V[chip->wait_reg] = 0xD;
-                        chip->waiting_for_key = 0;
-                        chip->pc += 2;
-                    }
-                    break;
-
-                case SDLK_a:
-                    chip->keys[0x7] = pressed;
-                    if (pressed && chip->waiting_for_key) {
-                        chip->V[chip->wait_reg] = 0x7;
-                        chip->waiting_for_key = 0;
-                        chip->pc += 2;
-                    }
-                    break;
-                case SDLK_s:
-                    chip->keys[0x8] = pressed;
-                    if (pressed && chip->waiting_for_key) {
-                        chip->V[chip->wait_reg] = 0x8;
-                        chip->waiting_for_key = 0;
-                        chip->pc += 2;
-                    }
-                    break;
-                case SDLK_d:
-                    chip->keys[0x9] = pressed;
-                    if (pressed && chip->waiting_for_key) {
-                        chip->V[chip->wait_reg] = 0x9;
-                        chip->waiting_for_key = 0;
-                        chip->pc += 2;
-                    }
-                    break;
-                case SDLK_f:
-                    chip->keys[0xE] = pressed;
-                    if (pressed && chip->waiting_for_key) {
-                        chip->V[chip->wait_reg] = 0xE;
-                        chip->waiting_for_key = 0;
-                        chip->pc += 2;
-                    }
-                    break;
-
-                case SDLK_y:
-                    chip->keys[0xA] = pressed;
-                    if (pressed && chip->waiting_for_key) {
-                        chip->V[chip->wait_reg] = 0xA;
-                        chip->waiting_for_key = 0;
-                        chip->pc += 2;
-                    }
-                    break;
-                case SDLK_x:
-                    chip->keys[0x0] = pressed;
-                    if (pressed && chip->waiting_for_key) {
-                        chip->V[chip->wait_reg] = 0x0;
-                        chip->waiting_for_key = 0;
-                        chip->pc += 2;
-                    }
-                    break;
-                case SDLK_c:
-                    chip->keys[0xB] = pressed;
-                    if (pressed && chip->waiting_for_key) {
-                        chip->V[chip->wait_reg] = 0xB;
-                        chip->waiting_for_key = 0;
-                        chip->pc += 2;
-                    }
-                    break;
-                case SDLK_v:
-                    chip->keys[0xF] = pressed;
-                    if (pressed && chip->waiting_for_key) {
-                        chip->V[chip->wait_reg] = 0xF;
-                        chip->waiting_for_key = 0;
-                        chip->pc += 2;
-                    }
-                    break;
+                }
             }
         }
     }
