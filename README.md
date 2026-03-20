@@ -40,7 +40,6 @@ git clone https://github.com/Isocoram/chip-8
 cd chip-8
 mkdir build && cd build
 cmake .. && make
-./chip8 roms/<rom_name>
 ```
 
 
@@ -48,7 +47,7 @@ cmake .. && make
 
 The executable takes the path to a ROM as a command line interface argument i.e. run
 ```
-./chip8 <path_to_rom>
+./chip8 roms/<rom_name
 ```
 
 
