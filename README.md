@@ -24,20 +24,23 @@ Implementation of a Chip-8 interpreter.
 
 ## Installation
 
+## Dependencies
+- C11 Compiler, Cmake, SDL2
+  
 ### MacOS
 ` brew install sdl2 cmake `
 
 ### Ubuntu
 ` sudp apt install libsdl2-dev cmake build-essentials `
 
-Using a terminal copy this repo then change into the repo folder and enter the follwoing commands to build the emulator. 
+Copy the following commands into your terminal to install!
 
 ```
 git clone https://github.com/Isocoram/chip-8
 cd chip-8
 mkdir build && cd build
-cmake ..
-make
+cmake .. && make
+./chip8 roms/<rom_name>
 ```
 
 
@@ -57,12 +60,6 @@ The executable takes the path to a ROM as a command line interface argument i.e.
 | Q W E R        |    4 5 6 D   |
 | A S D F        |    7 8 9 E   |
 | Y X C V        |    A 0 B F   |
-
-
-## Dependencies
-- C11 Compiler
-- Cmake (Build System)
-- SDL2 (for graphics and input)
 
 
 ## License
