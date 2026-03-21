@@ -51,7 +51,6 @@ static inline void handle_key_press(chip8_t * chip, uint8_t key, int pressed) {
         chip->waiting_for_key = 0;
         chip->pc += 2;
     }
-
 }
 
 void sdl_handle_input(chip8_t * chip) {
