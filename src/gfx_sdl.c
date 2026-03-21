@@ -44,6 +44,16 @@ void sdl_draw(uint8_t * gfx) {
     SDL_RenderPresent(renderer);
 }
 
+static inline void handle_key_press(chip8_t * chip, uint8_t key, int pressed) {
+    chip->keys[key] = pressed;
+    if (pressed && chip->waiting_for_key) {
+        chip->V[chip->wait_reg] = key;
+        chip->waiting_for_key = 0;
+        chip->pc += 2;
+    }
+
+}
+
 void sdl_handle_input(chip8_t * chip) {
     SDL_Event event;
     while(SDL_PollEvent(&event)) {
@@ -51,17 +61,24 @@ void sdl_handle_input(chip8_t * chip) {
         if (event.type == SDL_KEYDOWN ||event.type == SDL_KEYUP) {
             int pressed = (event.type == SDL_KEYDOWN);
             SDL_Keycode pressed_key = event.key.keysym.sym;
-            for (unsigned i = 0; i < 16; i++) {
-                if (pressed_key == layout[i].key) {
-                    keymap_t current_key = layout[i];
-                    chip->keys[current_key.value] = pressed;
-                    if (pressed && chip->waiting_for_key) {
-                        chip->V[chip->wait_reg] = current_key.value;
-                        chip->waiting_for_key = 0;
-                        chip->pc += 2;
-                    }
-
-                }
+            switch (pressed_key) {
+                case SDLK_1: handle_key_press(chip, 0x1, pressed); break;
+                case SDLK_2: handle_key_press(chip, 0x2, pressed); break;
+                case SDLK_3: handle_key_press(chip, 0x3, pressed); break;
+                case SDLK_4: handle_key_press(chip, 0xC, pressed); break;
+                case SDLK_q: handle_key_press(chip, 0x4, pressed); break;
+                case SDLK_w: handle_key_press(chip, 0x5, pressed); break;
+                case SDLK_e: handle_key_press(chip, 0x6, pressed); break;
+                case SDLK_r: handle_key_press(chip, 0xD, pressed); break;
+                case SDLK_a: handle_key_press(chip, 0x7, pressed); break;
+                case SDLK_s: handle_key_press(chip, 0x8, pressed); break;
+                case SDLK_d: handle_key_press(chip, 0x9, pressed); break;
+                case SDLK_f: handle_key_press(chip, 0xE, pressed); break;
+                case SDLK_y: handle_key_press(chip, 0xA, pressed); break;
+                case SDLK_x: handle_key_press(chip, 0x0, pressed); break;
+                case SDLK_c: handle_key_press(chip, 0xB, pressed); break;
+                case SDLK_v: handle_key_press(chip, 0xF, pressed); break;
+                default:break;
             }
         }
     }
